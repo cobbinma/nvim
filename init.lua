@@ -219,9 +219,8 @@ require('lazy').setup({
 
       -- Document existing key chains
       require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        ['<leader>l'] = { name = '[L]sp', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>x'] = { name = 'Trouble', _ = 'which_key_ignore' },
@@ -427,11 +426,13 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>lr', vim.lsp.buf.rename, '[L]sp [R]ename')
+
+          map('<leader>lR', vim.lsp.buf.references, '[L]sp [R]eferences')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          map('<leader>la', vim.lsp.buf.code_action, '[L]sp [A]ctions')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
@@ -482,6 +483,7 @@ require('lazy').setup({
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
+        marksman = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -521,6 +523,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'buf-language-server',
         'buf',
+        'marksman',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -544,12 +547,12 @@ require('lazy').setup({
     lazy = false,
     keys = {
       {
-        '<leader>cf',
+        '<leader>lf',
         function()
           require('conform').format { async = true, lsp_fallback = true }
         end,
         mode = '',
-        desc = '[C]ode [F]ormat buffer',
+        desc = '[L]sp [F]ormat buffer',
       },
     },
     opts = {
@@ -753,7 +756,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'go', 'rust', 'gleam', 'elixir', 'proto' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'go', 'rust', 'gleam', 'elixir', 'proto', 'markdown_inline' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

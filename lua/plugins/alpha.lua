@@ -26,17 +26,6 @@ return {
 
       dashboard.opts.layout[1].val = 8
 
-      if vim.o.filetype == 'lazy' then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd('User', {
-          once = true,
-          pattern = 'AlphaReady',
-          callback = function()
-            require('lazy').show()
-          end,
-        })
-      end
-
       require('alpha').setup(dashboard.opts)
     end,
   },

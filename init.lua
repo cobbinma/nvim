@@ -111,8 +111,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Keybinds for trouble plugin
-vim.keymap.set('n', '<leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', { desc = 'Document Diagnostics (Trouble)' })
-vim.keymap.set('n', '<leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', { desc = 'Workspace Diagnostics (Trouble)' })
+vim.keymap.set('n', '<leader>td', '<Cmd>TroubleToggle document_diagnostics<CR>', { desc = '[T]rouble [D]ocument Diagnostics' })
+vim.keymap.set('n', '<leader>tw', '<Cmd>TroubleToggle workspace_diagnostics<CR>', { desc = '[T]rouble [W]orkspace Diagnostics' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -165,14 +165,6 @@ require('lazy').setup({
   { 'numtostr/Comment.nvim', opts = {} },
 
   {
-    'saecki/crates.nvim',
-    tag = 'stable',
-    config = function()
-      require('crates').setup()
-    end,
-  },
-
-  {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
     config = true,
@@ -194,6 +186,15 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -220,11 +221,10 @@ require('lazy').setup({
       -- Document existing key chains
       require('which-key').register {
         ['<leader>l'] = { name = '[L]sp', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>x'] = { name = 'Trouble', _ = 'which_key_ignore' },
+        ['<leader>t'] = { name = '[T]rouble', _ = 'which_key_ignore' },
         ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -317,13 +317,13 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
+      vim.keymap.set('n', '<leader>fb', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
           winblend = 10,
           previewer = false,
         })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = 'Fuzzily [F]ind in current [B]uffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -414,15 +414,15 @@ require('lazy').setup({
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>ld', require('telescope.builtin').lsp_type_definitions, '[L]sp Type [D]efinition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>ls', require('telescope.builtin').lsp_document_symbols, '[L]sp Document [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[L]sp [W]orkspace Symbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -482,7 +482,8 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {},
+        gleam = {},
         marksman = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -568,6 +569,7 @@ require('lazy').setup({
         }
       end,
       formatters_by_ft = {
+        go = { 'goimports', 'gofumpt' },
         lua = { 'stylua' },
         proto = { 'buf' },
         -- Conform can also run multiple formatters sequentially
@@ -793,17 +795,17 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  require 'plugins.lint',
-  require 'plugins.alpha',
-  require 'plugins.bufferline',
+  -- require 'plugins.indent_line',
+  -- require 'plugins.lint',
+  -- require 'custom.plugins.alpha',
+  -- require 'plugins.bufferline',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

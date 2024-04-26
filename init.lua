@@ -466,8 +466,6 @@ require('lazy').setup({
         -- gopls = {},
         -- pyright = {},
         rust_analyzer = {},
-        gleam = {},
-        marksman = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -491,6 +489,8 @@ require('lazy').setup({
           },
         },
       }
+
+      require('lspconfig').gleam.setup {}
 
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install

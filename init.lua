@@ -54,6 +54,11 @@ vim.opt.timeoutlen = 300
 
 vim.opt.termguicolors = true
 
+-- Switch on the 'spell' option and specifies to check for GB english
+vim.opt.spell = true
+vim.opt.spelllang = 'en_gb'
+vim.opt.spelloptions = 'camel'
+
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -111,8 +116,9 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Keybinds for trouble plugin
-vim.keymap.set('n', '<leader>td', '<Cmd>TroubleToggle document_diagnostics<CR>', { desc = '[T]rouble [D]ocument Diagnostics' })
-vim.keymap.set('n', '<leader>tw', '<Cmd>TroubleToggle workspace_diagnostics<CR>', { desc = '[T]rouble [W]orkspace Diagnostics' })
+vim.keymap.set('n', '<leader>td', '<Cmd>Trouble diagnostics toggle filter.buf=0<CR>', { desc = '[T]rouble [D]ocument Diagnostics' })
+vim.keymap.set('n', '<leader>tw', '<Cmd>Trouble diagnostics toggle<CR>', { desc = '[T]rouble [W]orkspace Diagnostics' })
+vim.keymap.set('n', '<leader>tq', '<Cmd>Trouble qflist toggle<CR>', { desc = '[T]rouble [Q]uickfix List' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -208,6 +214,7 @@ require('lazy').setup({
         ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
         ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
         ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+        ['<leader>z'] = { name = '[Z]en 🧘', _ = 'which_key_ignore' },
       }
     end,
   },

@@ -470,9 +470,54 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {
+          settings = {
+            hints = {
+              rangeVariableTypes = true,
+              parameterNames = true,
+              constantValues = true,
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              functionTypeParameters = true,
+            },
+          },
+        },
         -- pyright = {},
-        rust_analyzer = {},
+        rust_analyzer = {
+          inlayHints = {
+            bindingModeHints = {
+              enable = false,
+            },
+            chainingHints = {
+              enable = true,
+            },
+            closingBraceHints = {
+              enable = true,
+              minLines = 25,
+            },
+            closureReturnTypeHints = {
+              enable = 'never',
+            },
+            lifetimeElisionHints = {
+              enable = 'never',
+              useParameterNames = false,
+            },
+            maxLength = 25,
+            parameterHints = {
+              enable = true,
+            },
+            reborrowHints = {
+              enable = 'never',
+            },
+            renderColons = true,
+            typeHints = {
+              enable = true,
+              hideClosureInitialization = false,
+              hideNamedConstructor = false,
+            },
+          },
+        },
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -480,6 +525,8 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+
+        bufls = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -489,6 +536,9 @@ require('lazy').setup({
             Lua = {
               completion = {
                 callSnippet = 'Replace',
+              },
+              hint = {
+                enable = true, -- necessary
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },

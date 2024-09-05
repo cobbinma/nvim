@@ -207,14 +207,14 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>l'] = { name = '[L]sp', _ = 'which_key_ignore' },
-        ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]rouble', _ = 'which_key_ignore' },
-        ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
-        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-        ['<leader>z'] = { name = '[Z]en 🧘', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>f', group = '[F]ind' },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>h', group = '[H]arpoon' },
+        { '<leader>l', group = '[L]sp' },
+        { '<leader>t', group = '[T]rouble' },
+        { '<leader>z', group = '[Z]en 🧘' },
       }
     end,
   },
@@ -612,12 +612,26 @@ require('lazy').setup({
         go = { 'goimports', 'gofumpt' },
         lua = { 'stylua' },
         proto = { 'buf' },
+        html = { 'prettierd', 'prettier' },
+        javascript = { 'prettierd', 'prettier' },
+        javascriptreact = { 'prettierd', 'prettier' },
+        markdown = { 'prettierd', 'prettier' },
+        typescript = { 'prettierd', 'prettier' },
+        typescriptreact = { 'prettierd', 'prettier' },
+        ['*'] = { 'trim_whitespace' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
+      },
+      formatters = {
+        prettierd = {
+          condition = function()
+            return vim.loop.fs_realpath '.prettierrc.js' ~= nil or vim.loop.fs_realpath '.prettierrc.mjs' ~= nil
+          end,
+        },
       },
     },
   },
@@ -741,7 +755,7 @@ require('lazy').setup({
       vim.cmd.colorscheme 'nord'
 
       -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
+      -- vim.cmd.hi 'Comment gui=none'
     end,
   },
 

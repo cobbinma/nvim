@@ -526,7 +526,9 @@ require('lazy').setup({
         -- tsserver = {},
         --
 
-        bufls = {},
+        buf_ls = {},
+
+        ruby_lsp = {},
 
         lua_ls = {
           -- cmd = {...},
